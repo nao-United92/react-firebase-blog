@@ -1,11 +1,27 @@
 import React, { useState } from 'react';
 import './CreatePost.css'; // Assuming you have a CSS file for styling
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '../firebase'; // Adjust the import based on your firebase configuration
+import { useNavigate } from 'react-router-dom';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [postText, setPostText] = useState('');
 
-  const createPost = async () => {};
+  const navigate = useNavigate();
+
+  const createPost = async () => {
+    await addDoc(collection(db, 'posts'), {
+      title: title,
+      postText: postText,
+      author: {
+        username: auth.currentUser.displayName,
+        id: auth.currentUser.uid,
+      },
+    });
+
+    navigate('/'); // Redirect to the home page after posting
+  };
 
   return (
     <div className="createPostPage">
