@@ -1,9 +1,20 @@
-import React from 'react'
+import React from 'react';
+import { auth, provider } from '../firebase';
 
 const Login = () => {
-  return (
-    <div>Login</div>
-  )
-}
+  const loginInWithGoogle = () => {
+    // Googleでログイン
+    signInWithPopup(auth, provider).then((result) => {
+      
+    });
+  };
 
-export default Login
+  return (
+    <div>
+      <p>ログインして始める</p>
+      <button onClick={loginInWithGoogle}>Googleでログイン</button>
+    </div>
+  );
+};
+
+export default Login;
