@@ -2,6 +2,7 @@ import { getDocs, collection } from 'firebase/firestore/lite';
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase'; // Adjust the import based on your project structure
 import './Home.css'; // Assuming you have a CSS file for styling
+import { deleteDoc, doc } from 'firebase/firestore';
 
 const Home = () => {
   const [postLists, setPostLists] = useState([]);
@@ -14,6 +15,11 @@ const Home = () => {
     getPosts();
   }, []);
 
+  const handleDelete = async (id) => {
+    await deleteDoc(doc(db, 'posts', id));
+    window.location.href = '/'; // Redirect to the home page after deletion
+  };
+
   return (
     <div className="homePage">
       {postLists.map((post) => {
@@ -25,7 +31,7 @@ const Home = () => {
             <div className="postTextContainer">{post.postsText}</div>
             <div className="nameAndDeleteButton">
               <h3>@{post.author.username}</h3>
-              <button>削除</button>
+              <button onClick={() => handleDelete(post.id)}>削除</button>
             </div>
           </div>
         );
