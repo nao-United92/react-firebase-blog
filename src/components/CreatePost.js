@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './CreatePost.css'; // Assuming you have a CSS file for styling
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../firebase'; // Adjust the import based on your firebase configuration
 import { useNavigate } from 'react-router-dom';
 
-const CreatePost = () => {
+const CreatePost = ({ isAuth }) => {
   const [title, setTitle] = useState('');
   const [postText, setPostText] = useState('');
 
@@ -22,6 +22,12 @@ const CreatePost = () => {
 
     navigate('/'); // Redirect to the home page after posting
   };
+
+  useEffect(() => {
+    if (!isAuth) {
+      navigate('/login'); // Redirect to login if not authenticated
+    }
+  }, []);
 
   return (
     <div className="createPostPage">
